@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Presentación Sistemas Operativos</title>
+  <style>
+    body {
+      background-color: #111;
+      color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow: hidden; /* para no mostrar scroll */
+    }
+
+    .slide {
+      width: 100%;
+      height: 100vh;
+      display: none;                /* todas ocultas al inicio */
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 50px;
+    }
+
+    .slide.active {
+      display: flex;                /* solo la activa se ve */
+    }
+
+    h2 {
+      font-size: 3em;
+      margin-bottom: 30px;
+    }
+
+    ul {
+      font-size: 2em;
+      line-height: 1.8;
+      list-style-type: disc;
+      padding-left: 40px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Diapositivas -->
+  <div class="slide active">📘 Bienvenidos a la presentación</div>
+
+  <div class="slide">
+    <h2>Funciones de un Sistema Operativo</h2>
+    <ul>
+       <li>Administración de procesos</li>
+       <li>Gestión de memoria</li>
+       <li>Control de dispositivos</li>
+       <li>Interfaz de usuario</li>
+    </ul>
+  </div>
+
+  <div class="slide">💻 ¿Qué es un Sistema Operativo?</div>
+  <div class="slide">⚙️ Funciones principales de un S.O.</div>
+  <div class="slide">📂 Ejemplos: Windows, Linux, macOS</div>
+  <div class="slide">✅ Gracias por su atención</div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    let current = 0;
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
+      });
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') {
+        current = (current + 1) % slides.length;
+        showSlide(current);
+      }
+      if (e.key === 'ArrowLeft') {
+        current = (current - 1 + slides.length) % slides.length;
+        showSlide(current);
+      }
+    });
+  </script>
+
+</body>
+</html>
