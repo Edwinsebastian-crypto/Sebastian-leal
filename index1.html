@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Presentación - Sistemas Operativos</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .slide {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: 2em;
+        opacity: 0;
+        transform: translateX(100%);
+        transition: all 0.8s ease;
+        overflow-y: auto;   /* 🔥 Permite scroll dentro de la diapositiva */
+        padding: 40px;      /* espacio para respirar */
+    }
+
+
+    .slide h2 {
+      font-size: 2em;
+      margin-bottom: 30px;     /* espacio debajo del título */
+    }
+
+    
+
+    .active {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .prev {
+      transform: translateX(-100%);
+    }
+
+    .controls {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 40px;
+    }
+
+    button {
+      background: #fff;
+      color: #111;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1em;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #ddd;
+    }
+  </style>
+</head>
+<body>
+    
+    <!-- Diapositivas -->
+    <div class="slide active">📘 Bienvenidos a la presentación</div>
+    <div class="slide">
+      <h2>Funciones de un Sistema Operativo</h2>
+      <ul>
+         <li>Administración de procesos</li>
+         <li>Gestión de memoria en ubahs dgw dwcw chj wh cwdgwgwch wc wcv</li>
+         <li>Control de dispositivos</li>
+         <li>Interfaz de usuario</li>
+         <li>Interfaz de usuario</li>
+         <li>Interfaz de usuario</li>
+         <li>Interfaz de usuario</li>
+         <li>Interfaz de usuario</li>
+         <li>Interfaz de usuario</li>
+         <li>Interfaz de usuario</li>
+         <li>Interfaz de usuario</li>
+         <li>Interfaz de usuario</li>
+         <li>Interfaz de usuario</li>
+      </ul>
+    </div>
+    <div class="slide">💻 ¿Qué es un Sistema Operativo?</div>
+    <div class="slide">⚙️ Funciones principales de un S.O.</div>
+  <div class="slide">📂 Ejemplos: Windows, Linux, macOS</div>
+  <div class="slide">✅ Gracias por su atención</div>
+
+  
+  <script>
+    const slides = document.querySelectorAll(".slide");
+    let current = 0;
+
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+        slide.classList.remove("active", "prev");
+        if (i === index) {
+            slide.classList.add("active");
+        } else if (i < index) {
+            slide.classList.add("prev");
+        }
+        });
+    }
+
+    // Detectar teclas
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight") {  // tecla ➡ avanza
+        current = (current + 1) % slides.length;
+        showSlide(current);
+        } else if (e.key === "ArrowLeft") { // tecla ⬅ retrocede
+        current = (current - 1 + slides.length) % slides.length;
+        showSlide(current);
+        }
+    });
+  </script>
+
+
+</body>
+</html>
