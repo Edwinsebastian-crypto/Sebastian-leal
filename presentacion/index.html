@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trabajo - Requisitos</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      background: linear-gradient(-45deg, #111, #222, #1a1a40, #3a0ca3);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* contenedor de cada slide */
+    .slide {
+      position: absolute;
+      inset: 0;                 /* top:0; right:0; bottom:0; left:0; */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 1.3rem;   /* subir tamnaño a toda la letra */
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(100%); /* por defecto fuera a la derecha */
+      transition: transform 0.8s ease, opacity 0.6s ease;
+      overflow: hidden;
+      padding: 40px;
+      text-align: center;
+      z-index: 1;
+    }
+
+    /* slide a la izquierda (prev) */
+    .slide.prev {
+      transform: translateX(-100%);
+    }
+
+    /* slide activo */
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0);
+      z-index: 2;
+    }
+
+    .slide .content {
+      flex: 1;
+      overflow-y: auto;
+      width: 100%;
+    }
+
+    .slide .footer {
+      padding: 20px 0;
+    }
+
+    .slide h2 {
+      font-size: 2.0em;
+      margin-bottom: 18px;
+      margin-top: 24px;
+      text-shadow: 2px 2px 10px rgba(0,0,0,0.7);
+    }
+
+    /* Botones principales */
+    .menu-btn {
+      background: linear-gradient(45deg, #ff0055, #ff6600);
+      color: #fff;
+      border: none;
+      padding: 12px 28px;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 40px;
+      margin: 8px;
+      box-shadow: 0px 5px 15px rgba(0,0,0,0.5);
+      transition: transform 0.18s, box-shadow 0.18s;
+      display: block;
+    }
+    .menu-btn:hover { transform: scale(1.06); box-shadow: 0px 8px 25px rgba(0,0,0,0.7); }
+
+    /* Botones para entidades */
+    .entity-btn {
+      background: linear-gradient(45deg, #007bff, #00d4ff);
+      color: #fff;
+      border: none;
+      padding: 10px 22px;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 25px;
+      margin: 6px;
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.4);
+      transition: transform 0.18s, box-shadow 0.18s;
+      display: block;
+    }
+    .entity-btn:hover { transform: scale(1.04); box-shadow: 0px 6px 20px rgba(0,0,0,0.6); }
+
+    .requisito-detalle {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 18px;
+      margin-top: 14px;
+      border-radius: 12px;
+      text-align: left;
+    }
+
+    .requisito-detalle h3 {
+      margin-bottom: 8px;
+      font-size: 1.15em;
+      color: #00d4ff;
+    }
+
+    ul { list-style: none; padding: 0; margin: 0; }
+    li { margin: 8px 0; font-size: 1.05em; }
+
+    ul li::before {
+      content: "• ";
+      color: #00d4ff;
+      font-weight: bold;
+      margin-right: 6px;
+    }
+
+    /* Centrado del menu y entidades */
+    #menu .content,
+    #entidades .content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      gap: 8px;
+    }
+
+    /* Fondo solo para la portada */
+    .portada {
+      background: url("portada.jpg") no-repeat center center fixed;
+      background-size: cover; /* Para que cubra toda la pantalla */
+      color: white; /* Texto blanco para que contraste */
+      text-shadow: 2px 2px 5px black; /* Mejor visibilidad del texto */
+    }
+
+
+    
+    /* Responsivo pequeño */
+    @media (max-width:600px) {
+      .menu-btn, .entity-btn { padding: 10px 18px; font-size: .95rem; }
+      .slide { padding: 18px; font-size: .95rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Menú principal -->
+  <section class="slide active portada" id="menu" role="region" aria-labelledby="menu-title">
+    <div class="content">
+      <h2 id="menu-title">Camino hacia el terror🛣️💀</h2>
+
+      <button class="menu-btn" onclick="goToSlide('requisitos')">Requisitos</button>
+      <button class="menu-btn" onclick="goToSlide('entidades')">Entidades y Atributos</button>
+      <button class="menu-btn" onclick="goToSlide('esquema')">Esquema</button> 
+    </div>
+  </section>
+
+  <!-- Requisitos -->
+  <section class="slide" id="requisitos" role="region" aria-labelledby="req-title">
+    <div class="content">
+      <h2 id="req-title">Requisitos</h2>
+
+      <div class="requisito-detalle">
+        <h3>Entidad: Peaje</h3>
+        <ul>
+          <li>Identificador único del peaje.</li>
+          <li>Nombre oficial del peaje.</li>
+          <li>Tipo de mecanismo de cobro.</li>
+          <li>Ubicación geográfica exacta del peaje.</li>
+          <li>Fecha en la que el peaje entró en operación.</li>
+          <li>Cantidad de carriles que tiene el peaje.</li>
+        </ul>
+      </div>
+
+      <div class="requisito-detalle">
+        <h3>Entidad: Ubicación</h3>
+        <ul>
+          <li>Identificador único de la ubicación.</li>
+          <li>Departamento en el que se encuentra el peaje.</li>
+          <li>Municipio donde está localizado el peaje.</li>
+          <li>Ruta nacional (código, nombre).</li>
+          <li>Nombre del corredor vial en el que está ubicado.</li>
+        </ul>
+      </div>
+
+      <div class="requisito-detalle">
+        <h3>Entidad: Concesión Vial</h3>
+        <ul>
+          <li>Identificador único de la concesión vial.</li>
+          <li>Nombre oficial de la concesión.</li>
+          <li>Código oficial del contrato de concesión.</li>
+          <li>Institución responsable de otorgar la concesión.</li>
+          <li>Fecha inicio - fin del contrato.</li>
+        </ul>
+      </div>
+
+      <div class="requisito-detalle">
+        <h3>Entidad: Categoría Vehicular</h3>
+        <ul>
+          <li>Identificador único de la categoría.</li>
+          <li>Código de la categoría vehicular.</li>
+          <li>Número de ejes del vehículo.</li>
+          <li>Norma que define la categoría vehicular.</li>
+          <li>Variante o divisiones dentro de la categoría.</li>
+          <li>Notas adicionales relevantes de la categoría.</li>
+        </ul>
+      </div>
+
+      <div class="requisito-detalle">
+        <h3>Entidad: Tarifa</h3>
+        <ul>
+          <li>Identificador único de la tarifa.</li>
+          <li>Valor por categoría.</li>
+          <li>Fecha de inicio - fin de la tarifa.</li>
+          <li>Indica si existe una tarifa diferencial.</li>
+          <li>Condición por la cual aplica la tarifa diferencial.</li>
+          <li>Factor de ajuste de la tarifa.</li>
+          <li>Porcentaje aplicado en el ajuste de la tarifa.</li>
+        </ul>
+      </div>
+
+      <div class="requisito-detalle">
+        <h3>Entidad: Histórico de Tarifas</h3>
+        <ul>
+          <li>Identificador único del registro histórico.</li>
+          <li>Periodo (fecha inicio, fecha finalización).</li>
+          <li>Valor de la tarifa en ese periodo (por categoría).</li>
+          <li>Norma / resolución que fijó la tarifa.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer">
+      <button class="menu-btn" onclick="goToSlide('menu')">⬅ Volver al Menú</button>
+    </div>
+  </section>
+
+  <!-- Entidades -->
+  <section class="slide" id="entidades" role="region" aria-labelledby="ent-title">
+    <div class="content">
+      <h2 id="ent-title">Entidades</h2>
+      <button class="entity-btn" onclick="goToSlide('peaje')">Peaje</button>
+      <button class="entity-btn" onclick="goToSlide('ubicacion')">Ubicación</button>
+      <button class="entity-btn" onclick="goToSlide('concesion')">Concesión Vial</button>
+      <button class="entity-btn" onclick="goToSlide('categoria')">Categoría Vehicular</button>
+      <button class="entity-btn" onclick="goToSlide('tarifa')">Tarifa</button>
+      <button class="entity-btn" onclick="goToSlide('historico')">Histórico Tarifas</button>
+    </div>
+    <div class="footer">
+      <button class="menu-btn" onclick="goToSlide('menu')">⬅ Volver al Menú</button>
+    </div>
+  </section>
+
+  <!-- Diapositivas de cada entidad -->
+  <section class="slide" id="peaje">
+    <div class="content">
+      <h2>🏗 Entidad: Peaje</h2>
+      <ul>
+        <li>ID_peaje</li>
+        <li>Nombre</li>
+        <li>Tipo (manual, electrónico, mixto)</li>
+        <li>Coordenadas (latitud, longitud)</li>
+        <li>Fecha inicio operación</li>
+        <li>N° carriles</li>
+      </ul>
+    </div>
+    <div class="footer">
+      <button class="menu-btn" onclick="goToSlide('entidades')">⬅ Volver a Entidades</button>
+    </div>
+  </section>
+
+  <section class="slide" id="ubicacion">
+    <div class="content">
+      <h2>📍🗺️ Entidad: Ubicación</h2>
+      <ul>
+        <li>ID_ubicación</li>
+        <li>Departamento</li>
+        <li>Municipio</li>
+        <li>Ruta nacional (código, nombre)</li>
+        <li>Corredor vial</li>
+      </ul>
+    </div>
+    <div class="footer">
+      <button class="menu-btn" onclick="goToSlide('entidades')">⬅ Volver a Entidades</button>
+    </div>
+  </section>
+
+  <section class="slide" id="concesion">
+    <div class="content">
+      <h2>🏢 Entidad: Concesión Vial</h2>
+      <ul>
+        <li>ID_concesión</li>
+        <li>Nombre concesión</li>
+        <li>Tipo_concesión(Privada/Pública)</li>
+        <li>Contrato (N° contrato, entidad_contratante, fecha inicio-fin)</li>
+      </ul>
+    </div>
+    <div class="footer">
+      <button class="menu-btn" onclick="goToSlide('entidades')">⬅ Volver a Entidades</button>
+    </div>
+  </section>
+
+  <section class="slide" id="categoria">
+    <div class="content">
+      <h2>🚗 Entidad: Categoría Vehicular</h2>
+      <ul>
+        <li>ID_categoria</li>
+        <li>N° categoría(I-VII)</li>
+        <li>N° ejes</li>
+        <li>Resolución (Nº, año)</li>
+        <li>Subcategorías</li>
+        <li>Observaciones</li>
+      </ul>
+    </div>
+    <div class="footer">
+      <button class="menu-btn" onclick="goToSlide('entidades')">⬅ Volver a Entidades</button>
+    </div>
+  </section>
+
+  <section class="slide" id="tarifa">
+    <div class="content">
+      <h2>💰 Entidad: Tarifa</h2>
+      <ul>
+        <li>ID_tarifa</li>
+        <li>Valor por categoría (I-VII)</li>
+        <li>Fecha vigencia (inicio, finalización)</li>
+        <li>Tarifa diferencial (Aplica / No aplica)</li>
+        <li>Criterio diferencial (residencia, placa)</li>
+        <li>Criterio ajuste</li>
+        <li>Porcentaje incremento</li>
+      </ul>
+    </div>
+    <div class="footer">
+      <button class="menu-btn" onclick="goToSlide('entidades')">⬅ Volver a Entidades</button>
+    </div>
+  </section>
+
+  <section class="slide" id="historico">
+    <div class="content">
+      <h2>📊 Entidad: Histórico Tarifas</h2>
+      <ul>
+        <li>ID_histórico</li>
+        <li>Periodo (fecha inicio, fecha finalización)</li>
+        <li>Valor(por categoría)</li>
+        <li>Resolución tarifa</li>
+      </ul>
+    </div>
+    <div class="footer">
+      <button class="menu-btn" onclick="goToSlide('entidades')">⬅ Volver a Entidades</button>
+    </div>
+  </section>
+
+
+
+  <section class="slide" id="esquema">
+    <div class="content">
+     <h2>Modelo Entidad-Relación</h2>
+
+    <!-- Imagen clickeable -->
+     <img src="er.png" alt="Modelo ER" class="zoom-img"
+       style="max-width: 90%; max-height: 500px; border-radius: 15px;
+             box-shadow: 0 0 15px rgba(0,0,0,0.6); background: #fff; padding: 10px; cursor:pointer;">
+    </div>
+
+    <div class="footer">
+       <button class="menu-btn" onclick="goToSlide('menu')">⬅ Volver al Menú</button>
+    </div>
+  </section>
+
+    <!-- ========== LIGHTBOX (pegar en lugar del bloque actual) ========== -->
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <span class="close" onclick="closeLightbox()" role="button" aria-label="Cerrar">&times;</span>
+    <div class="lightbox-overlay">
+      <img id="lightbox-img" class="lightbox-content" src="" alt="Imagen ampliada">
+    </div>
+  </div>
+
+  <style>
+  /* Lightbox - estilos */
+  .lightbox {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    padding: 20px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.95);
+    overflow: hidden; /* manejamos pan/zoom por JS */
+  }
+
+  .lightbox-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: default;
+    overflow: hidden;
+  }
+
+  .lightbox-overlay {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* La imagen se transformará (translate + scale). 
+    Ponemos transform-origin en 0 0 para facilitar el cálculo del pan relativo. */
+  .lightbox-content {
+    transition: transform 0.08s linear;
+    transform-origin: 0 0;
+    max-width: none;
+    max-height: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    cursor: grab;
+  }
+  .lightbox-content:active { cursor: grabbing; }
+
+  .close {
+    position: absolute;
+    top: 12px;
+    right: 18px;
+    color: #fff;
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 2010;
+  }
+  .close:hover { color: #ff7777; }
+  </style>
+
+  <script>
+  /* Lightbox: open on click for all images with class .zoom-img,
+    zoom with wheel, drag to pan, double-click to reset. */
+
+  let scale = 1;
+  let isDragging = false;
+  let startX = 0, startY = 0, translateX = 0, translateY = 0;
+
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+
+  // openLightbox: muestra y resetea transformaciones
+  function openLightbox(src) {
+    lightboxImg.src = src;
+    scale = 1;
+    translateX = 0;
+    translateY = 0;
+    updateTransform();
+    lightbox.style.display = 'block';
+    lightbox.setAttribute('aria-hidden','false');
+    // focus para accesibilidad / permitir cerrar con ESC
+    document.body.style.overflow = 'hidden';
+  }
+
+  // closeLightbox
+  function closeLightbox() {
+    lightbox.style.display = 'none';
+    lightbox.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+  }
+
+  // Bind click on all images with class .zoom-img (your ER image)
+  document.querySelectorAll('.zoom-img').forEach(img => {
+    img.style.cursor = 'zoom-in';
+    img.addEventListener('click', (e) => {
+      openLightbox(e.currentTarget.src);
+    });
+  });
+
+  // Close when clicking outside the image (on overlay)
+  lightbox.addEventListener('click', function(e) {
+    if (e.target.classList.contains('lightbox-overlay')) {
+      closeLightbox();
+    }
+  });
+
+  // Close with ESC
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeLightbox();
+  });
+
+  /* --- Wheel zoom --- 
+    We compute a focal adjustment so the point under the cursor remains roughly stable. */
+  lightbox.addEventListener('wheel', function(e) {
+    if (lightbox.style.display !== 'block') return;
+    e.preventDefault();
+
+    // scale step
+    const delta = (e.deltaY < 0) ? 0.12 : -0.12;
+    const newScale = Math.min(4, Math.max(0.3, scale + delta)); // clamp
+
+    // compute pointer relative to image (consider current transform)
+    const rect = lightboxImg.getBoundingClientRect();
+    // coordinates of pointer relative to image top-left
+    const pointerX = e.clientX - rect.left;
+    const pointerY = e.clientY - rect.top;
+
+    // translate the image so pointer stays under cursor after scale change
+    // convert pointer to image-space before scale
+    const imgSpaceX = (pointerX - translateX) / scale;
+    const imgSpaceY = (pointerY - translateY) / scale;
+
+    translateX -= imgSpaceX * (newScale - scale);
+    translateY -= imgSpaceY * (newScale - scale);
+
+    scale = newScale;
+    updateTransform();
+  }, { passive: false });
+
+  /* --- Drag to pan (mousedown on image, move on document, up to stop) --- */
+  lightboxImg.addEventListener('mousedown', function(e) {
+    if (lightbox.style.display !== 'block') return;
+    isDragging = true;
+    startX = e.clientX - translateX;
+    startY = e.clientY - translateY;
+    lightboxImg.style.cursor = 'grabbing';
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', function(e) {
+    if (!isDragging) return;
+    translateX = e.clientX - startX;
+    translateY = e.clientY - startY;
+    updateTransform();
+  });
+  document.addEventListener('mouseup', function() {
+    isDragging = false;
+    lightboxImg.style.cursor = 'grab';
+  });
+
+  /* Prevent the browser drag image default (ghost image) */
+  lightboxImg.ondragstart = () => false;
+
+  /* Double click to reset zoom/position */
+  lightboxImg.addEventListener('dblclick', function() {
+    scale = 1; translateX = 0; translateY = 0;
+    updateTransform();
+  });
+
+  /* Update CSS transform */
+  function updateTransform() {
+    lightboxImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+  }
+  </script>
+  <!-- ========== END LIGHTBOX ========== -->
+
+
+
+  <script>
+    // recoger slides y establecer índice actual
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    let currentIndex = slides.findIndex(s => s.classList.contains('active'));
+    if (currentIndex === -1) {
+      currentIndex = 0;
+      slides[0].classList.add('active');
+    }
+
+    // función para cambiar slide (con logs para debug)
+    function goToSlide(id) {
+      const targetIndex = slides.findIndex(s => s.id === id);
+      console.log('Intentando ir a slide:', id, '-> index', targetIndex);
+      if (targetIndex === -1) {
+        console.warn('Slide no encontrado:', id);
+        return;
+      }
+
+      slides.forEach((slide, idx) => {
+        slide.classList.toggle('active', idx === targetIndex);
+        slide.classList.toggle('prev', idx < targetIndex);
+        slide.classList.toggle('next', idx > targetIndex);
+      });
+
+      currentIndex = targetIndex;
+    }
+
+    // flechas del teclado
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') {
+        const next = (currentIndex + 1) % slides.length;
+        goToSlide(slides[next].id);
+      } else if (e.key === 'ArrowLeft') {
+        const prev = (currentIndex - 1 + slides.length) % slides.length;
+        goToSlide(slides[prev].id);
+      }
+    });
+
+    // debug: mostrar cuántos slides y cuál está activo al cargar
+    console.log('Slides encontrados:', slides.length, 'currentIndex:', currentIndex, 'id activo:', slides[currentIndex].id);
+  </script>
+</body>
+</html>
